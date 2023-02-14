@@ -3,7 +3,7 @@ let nav = document.querySelector('.game-list')
 let image = document.querySelector('#detail-image')
 let title = document.querySelector('#detail-title')
 let score = document.querySelector('#detail-high-score')
-let form = document.querySelector('#high-score-form')
+let currentGame;
 
 fetch('http://localhost:3000/games')
 .then(res => res.json() )
@@ -26,14 +26,19 @@ function renderDetails(games){
     image.src = games.image
     title.textContent = games.name
     score.textContent = games.high_score
+    currentGame = games
 }
 
 
-form.addEventListener('submit', e => addHighScore(e))
 
-function addHighScore(e){
+
+let form = document.querySelector('#high-score-form')
+let scoreInput = document.querySelector('#score-input')
+
+form.addEventListener('submit', e => {
     e.preventDefault()
-    console.log(e)
-    score.textContent = e.target['score-input'].value
-    form.reset()
-}
+   
+    score.textContent = scoreInput.value
+    currentGame.high_score = scoreInput.value
+    e.target.reset()
+})
